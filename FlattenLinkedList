@@ -1,0 +1,44 @@
+/**
+ * // Definition for a Node.
+ * function Node(val,prev,next,child) {
+ *    this.val = val;
+ *    this.prev = prev;
+ *    this.next = next;
+ *    this.child = child;
+ * };
+ */
+
+/**
+ * @param {Node} head
+ * @return {Node}
+ */
+var flatten = function(head) {
+    var flat = function(head, p){
+        if(p!==null){
+            p.child=null;
+        }
+        var top = (p==null) ? true:false;
+        var b = head;
+        var pt = head;
+        var e = null;
+        var n = (!top) ? p.next:null;
+        while(pt!==null){
+            if(pt.child==null){
+                if(pt.next==null){
+                    e=pt;
+                }
+            }else{
+                flat(pt.child, pt);
+            }
+            pt=pt.next;
+        }
+        if(!top){
+            b.prev=p;
+            p.next=b;
+            if(n!==null){n.prev=e};
+            e.next=n;
+        }
+    }
+    flat(head, null);
+    return head
+};
