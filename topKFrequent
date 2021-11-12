@@ -1,0 +1,27 @@
+/**
+ * @param {string[]} words
+ * @param {number} k
+ * @return {string[]}
+ */
+var topKFrequent = function(words, k) {
+    var res=[];
+    var wordCount={
+        // "word":2
+    }
+    for(i=0; i<words.length; i++){
+        var word=words[i];
+        var keys=Object.keys(wordCount);
+        if(keys.indexOf(word)<0){
+            wordCount[word]=1;
+        }else{
+            wordCount[word]++;
+        }
+    }
+    var sorted = Object.keys(wordCount).sort((a, b) => { 
+        if (wordCount[b] === wordCount[a]) { 
+            return a > b ? 1 : -1 
+        }
+        return wordCount[b] - wordCount[a]
+    })
+    return sorted.slice(0, k)
+};
