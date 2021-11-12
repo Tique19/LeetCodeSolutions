@@ -1,0 +1,51 @@
+/**
+ * initialize your data structure here.
+ */
+var MinStack = function() {
+    this.S = [];
+    this.m = [];
+};
+
+/** 
+ * @param {number} val
+ * @return {void}
+ */
+MinStack.prototype.push = function(val) {
+    this.S.push(val);
+    if(this.m.length==0){
+        this.m.push(val);
+    }else{
+        this.m.push(Math.min(val, this.m[this.m.length-1]))
+    }
+};
+
+/**
+ * @return {void}
+ */
+MinStack.prototype.pop = function() {
+    this.S.pop();
+    this.m.pop();
+};
+
+/**
+ * @return {number}
+ */
+MinStack.prototype.top = function() {
+    return this.S[this.S.length-1];
+};
+
+/**
+ * @return {number}
+ */
+MinStack.prototype.getMin = function() {
+    return this.m[this.m.length-1];
+};
+
+/** 
+ * Your MinStack object will be instantiated and called as such:
+ * var obj = new MinStack()
+ * obj.push(val)
+ * obj.pop()
+ * var param_3 = obj.top()
+ * var param_4 = obj.getMin()
+ */
