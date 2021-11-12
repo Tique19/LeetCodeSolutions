@@ -1,0 +1,68 @@
+/**
+ * @param {number[]} nums
+ * @return {number[][]}
+ */
+var threeSum = function(nums) {
+    if(nums.length<3){
+        return [];
+    }
+    var result=new Map();
+    var seen=new Map();
+    var dups=new Map();
+    var res=[];
+    for(var i=0; i<nums.length-1; i++){
+        if(dups.set(nums[i], i)){
+            for(var j=i+1; j<nums.length; j++){
+                var comp= (-1*nums[i])+(-1*nums[j]);
+                if(seen.has(comp) && seen.get(comp)==i){
+                    var triplet = [nums[i], nums[j], comp];
+                    triplet=bubbleSort(triplet);
+                    var check= isUnique(result, triplet);
+                    
+                    if(check){
+                       result.set(triplet, j);
+                    }
+                }
+                seen.set(nums[j], i);
+            }
+        }
+    }
+    var resSet = new Set();
+    for(var key of result.keys()){
+        resSet.add(key);
+    }
+    
+    
+    return Array.from(resSet);
+};
+
+function isUnique(map, entry){
+    var array=[];
+    for(var key of map.keys()){
+        array.push(key);
+    }
+    for(i=0; i<array.length; i++){
+        var arr=array[i]
+        if(entry[0]==arr[0] && entry[1]==arr[1] && entry[2]==arr[2]){
+            return false;
+        }
+    }
+    return true;
+}
+
+function bubbleSort(array){
+    var arr=array;
+    var swaps=-1;
+    while(swaps!==0){
+        swaps=0;
+        for(i=0; i<arr.length-1; i++){
+            if(arr[i]>arr[i+1]){
+                var tmp = arr[i+1];
+                arr[i+1]=arr[i];
+                arr[i]=tmp;
+                swaps++;
+            }
+        }
+    }
+    return arr;
+}
