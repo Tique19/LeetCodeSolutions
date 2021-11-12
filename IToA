@@ -1,0 +1,80 @@
+/**
+ * @param {number} num
+ * @return {string}
+ */
+var numberToWords = function(num) {
+    //by pows of 3 0,1,2
+    let pow=0;
+    let result="";
+    while(num>0){
+        var lowDigits=num%1000;
+        num=Math.floor(num/1000);
+        result=makeName(lowDigits, pow)+result;
+        pow+=3;
+    }  
+    result=(result.length>0) ? result : "Zero";
+    result=(result[result.length-1]!==" ") ? result : result.trimEnd(); 
+    return result;
+};
+
+function makeName(num, pow){
+    let result="";
+    let pow2=0;
+    let numCopy=num;
+    let ones=["", "One", "Two", "Three",  "Four", "Five", "Six", "Seven", "Eight", "Nine"];
+    let teens=["", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"];
+    let tens=["", "Ten", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"];
+    let teensMap= fillMap(tens[1], ones, teens);
+    
+    while(numCopy>0){
+        let dgt=numCopy%10;
+        numCopy=Math.floor(numCopy/10);
+        switch(pow2){
+            case 0:
+                if(dgt!==0){
+                    result=ones[dgt]+result;
+                }
+                break;
+            case 1:
+                if(dgt!==0){
+                    result=tens[dgt]+" "+result;
+                }
+                break;
+            case 2:
+                if(dgt!==0){
+                    result=ones[dgt]+" Hundred "+result;
+                }
+                break;
+        }
+        pow2++;
+    };
+    let teenPatt=new RegExp("Ten .+", "g");
+    let check=teenPatt.test(result);
+    if(check){
+        let oldTeen=result.match(teenPatt)[0];
+        result=result.replace(oldTeen, teensMap.get(oldTeen))
+    }
+    result=result.trimEnd();
+    switch(pow){
+        case 0:
+            return result;
+            break;
+        case 3:
+            return (num>0) ? result+" Thousand ": result;
+            break;
+        case 6:
+            return (num>0) ? result+" Million ": result;
+            break;
+        case 9:
+            return (num>0) ? result+" Billion ": result;
+            break;
+    }
+}
+
+function fillMap(s1, s2arr, rArr){
+    let m=new Map();
+    for(i=1; i<s2arr.length; i++){
+        m.set(s1+" "+s2arr[i], rArr[i]);
+    }
+    return m;
+}
