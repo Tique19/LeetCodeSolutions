@@ -1,0 +1,39 @@
+/**
+ * // Definition for a Node.
+ * function Node(val, left, right, next) {
+ *    this.val = val === undefined ? null : val;
+ *    this.left = left === undefined ? null : left;
+ *    this.right = right === undefined ? null : right;
+ *    this.next = next === undefined ? null : next;
+ * };
+ */
+
+/**
+ * @param {Node} root
+ * @return {Node}
+ */
+var connect = function(root) {
+    if(root==null){
+        return null
+    }
+    var addNextPointer=function(root, side, parent){
+        if(side==null && parent==null){
+            root.next=null;
+            if(root.left){addNextPointer(root.left, "left", root)};
+            if(root.right){addNextPointer(root.right, "right", root)};
+        }else if(side=="left"){
+            root.next=parent.right ? parent.right:null;
+            if(root.left){addNextPointer(root.left, "left", root)};
+            if(root.right){addNextPointer(root.right, "right", root)};
+        }else if(side=="right"){
+            if(parent.next){
+                root.next=parent.next.left;
+            }
+            if(root.left){addNextPointer(root.left, "left", root)};
+            if(root.right){addNextPointer(root.right, "right", root)};
+        }
+        return root
+    }
+    addNextPointer(root, null, null)
+    return root
+};
