@@ -1,0 +1,39 @@
+/**
+ * Initialize your data structure here.
+ * @param {number} size
+ */
+var MovingAverage = function(size) {
+    this.nums=[];
+    this.window=size;
+    
+};
+
+/** 
+ * @param {number} val
+ * @return {number}
+ */
+MovingAverage.prototype.next = function(val) {
+    this.nums.push(val);
+    var res = 0;
+    var count = 0;
+    var last = this.nums.length-1;
+    if(this.nums.length>=this.window){
+        while(count<this.window){
+            res+=this.nums[last-count]/this.window;
+            count++;
+        }
+    }else{
+        while(count<this.nums.length){
+            res+=this.nums[count]/this.nums.length;
+            count++;
+        }
+    }
+    return res;
+    
+};
+
+/** 
+ * Your MovingAverage object will be instantiated and called as such:
+ * var obj = new MovingAverage(size)
+ * var param_1 = obj.next(val)
+ */
