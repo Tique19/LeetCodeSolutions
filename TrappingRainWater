@@ -1,0 +1,52 @@
+/**
+ * @param {number[]} height
+ * @return {number}
+ */
+var trap = function(height) {
+    var result=0;
+    if(height.length<3){return 0}
+    let stack=[];
+    for(var i=0; i<height.length; i++){
+        let bar=height[i];
+        stack.push(bar);
+        let nextBar=i+1<height.length ? height[i+1] : 3*10000+1;
+        if(nextBar>=bar){
+            stack.pop()
+        }else{
+            let pt=i+1;
+            while(nextBar<bar && pt<height.length){
+                stack.push(nextBar);
+                pt++;
+                nextBar=height[pt];
+            }
+            if(pt==height.length){
+                let rStack=reverse(stack);
+                result+=trap(rStack);
+                break;
+            }else{
+                result+=calcWater(stack);
+                i=pt-1;
+                stack=[];
+            }
+            
+        }
+    } 
+    return result
+};
+
+function calcWater(arr){
+    let res=0;
+    let left=arr.shift();
+    for(i=0; i<arr.length; i++){
+        res+=left-arr[i];
+    }
+    return res;
+}
+
+function reverse(arr){
+    let res=[];
+    while(arr.length>0){
+        res.push(arr.pop())
+    }
+    return res;
+}
