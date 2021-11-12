@@ -1,0 +1,23 @@
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * @param {ListNode} head
+ * @return {ListNode}
+ */
+var reverseList = function(head) {
+    function splitNflip(head, rHead){
+        if(head==null){
+            return rHead;
+        }
+        let curr=head;
+        let next=head.next;
+        curr.next=rHead;
+        return splitNflip(next, curr);
+    }
+    return splitNflip(head, null)
+};
