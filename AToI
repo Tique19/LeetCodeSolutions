@@ -1,0 +1,57 @@
+/**
+ * @param {string} s
+ * @return {number}
+ */
+var myAtoi = function(s) {
+    var res=0;
+    var isNeg=false;
+    var digits=[];
+    var dMap={
+        "0":0,
+        "1":1,
+        "2":2,
+        "3":3,
+        "4":4,
+        "5":5,
+        "6":6,
+        "7":7,
+        "8":8,
+        "9":9
+    };
+    var pt=0;
+    while(s[pt]==" "){
+        pt++;
+    }
+    if(s[pt]=="-"){
+        isNeg=true;
+        pt++;
+    }else if(s[pt]=="+"){
+        pt++;
+    }else if(/\D/.test(s[pt])){
+        return 0;
+        //encountered non digit came before number  
+    }
+    while(/\d/.test(s[pt])){
+        digits.push(dMap[s[pt]]);
+        pt++;
+    }
+    var pow=digits.length-1;
+    while(digits.length>0){
+        var dg=digits.shift();
+        res+=dg*Math.pow(10, pow);
+        if(!(isNeg) && res>=2147483647){
+            return 2147483647;
+        }
+        if(isNeg && res>2147483648){
+            return -2147483648;
+        }
+        pow--;
+    }
+    if(isNeg){
+        return -1*res;
+    }else{
+        return res;
+    }
+    
+    
+};
