@@ -1,0 +1,38 @@
+/**
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {number[]}
+ */
+var maxSlidingWindow = function(nums, k) {
+    var res=[];
+    var window=nums.slice(0,k)
+    var Q=[nums[0]];
+    var pt=1;
+    while(pt<k){
+        if(nums[pt]>=peek(Q)){
+            Q.push(nums[pt]);
+        }
+        pt++;
+    }
+    res.push(peek(Q))
+    for(i=0; i<nums.length-k; i++){
+        var oLeft=window.shift();
+        if(oLeft==Q[0]){
+            Q.shift();
+            if(Q.length==0){
+                Q.push(Math.max(...window));
+            }
+        }
+        var nRight=nums[i+k];
+        window.push(nRight);
+        if(nRight>peek(Q)){
+            Q.push(nRight);
+        }
+        res.push(peek(Q));
+        
+    }
+    return res
+};
+function peek(arr){
+    return arr[arr.length-1];
+}
